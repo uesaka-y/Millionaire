@@ -2,4 +2,10 @@
 
 <%= render 'form' %>
 
+
+
+<% if user.adm? %>
+<%= link_to 'New User', user_index_path %>
+<% else %>
 <%= link_to 'Back', login_path %>
+<% end %>
