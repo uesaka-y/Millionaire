@@ -7,13 +7,13 @@ Rails.application.routes.draw do
      match 'login' => "session#new" , via: :all
   resource :session, :only => [:create], :controller => 'session'
 
-  #   match'setup'=>"setup#index",via: :all
+   match'setup'=>"setup#index",via: :all
 
-     controller :tags do
-               post 'create' => 'tags#create', :as => 'tags_create'
-               post 'destroy' => 'tags#destroy', :as => 'tags_destroy'
-             end
-          end
+    #  controller :tags do
+    #            post 'create' => 'tags#create', :as => 'tags_create'
+    #            post 'destroy' => 'tags#destroy', :as => 'tags_destroy'
+    #          end
+          #end
 
 
 

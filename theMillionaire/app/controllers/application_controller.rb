@@ -15,7 +15,7 @@ end
   private
   def admin_required
     unless @login_user.adm?
-      redirect_to user_path(@login_user)
+      redirect_to setup_path(@login_user)
     end
 end
 end
