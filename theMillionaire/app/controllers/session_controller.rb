@@ -8,10 +8,17 @@ class SessionController < ApplicationController
      @user_id = params[:user_id]
     @password = params[:password]
     @user= User.authenticate @user_id,@password
+
+
+
     if @user
       session[:user_id] = @user.id
       flash[:notice] = "ログインに成功しました"
-    redirect_to setup_path #ユーザーのメニュー画面へいく
+      if @user.adm
+        redirect_to users_path
+      else
+        redirect_to setup_path #ユーザーのメニュー画面へいく
+      end
     else
       @error = "ログインに失敗しました"
         render :action => :new
