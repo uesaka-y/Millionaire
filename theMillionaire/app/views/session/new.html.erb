@@ -8,7 +8,7 @@
   <%= label :user_id, 'user_id:' %>
   <%= text_field_tag :user_id, @user_id %><br />
   <%= label :password, 'password:' %>
-  <%= text_field_tag :password, "" %><br />
+  <%= text_password_tag :password, "" %><br />
   <%= submit_tag "login" %><br />
 <% end %>
 <%= link_to "NewUser", new_user_url %>
