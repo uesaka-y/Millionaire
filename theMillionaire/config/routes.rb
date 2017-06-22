@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  resources :setups
+
 
   resources :users
 
@@ -7,7 +7,7 @@ Rails.application.routes.draw do
      match 'login' => "session#new" , via: :all
   resource :session, :only => [:create], :controller => 'session'
 
-   match'setup'=>"setup#index",via: :all
+   match'setup'=>"setups#show",via: :all
 
     #  controller :tags do
     #            post 'create' => 'tags#create', :as => 'tags_create'
