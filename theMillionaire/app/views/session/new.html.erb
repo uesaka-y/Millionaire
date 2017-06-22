@@ -1,0 +1,14 @@
+<h1>ログイン画面</h1>
+
+<% if @error %>
+ <%= @error %><br />
+<% end %>
+
+<%= form_tag session_url do %>
+  <%= label :user_id, 'user_id:' %>
+  <%= text_field_tag :user_id, @user_id %><br />
+  <%= label :password, 'password:' %>
+  <%= text_field_tag :password, "" %><br />
+  <%= submit_tag "login" %><br />
+<% end %>
+<%= link_to "NewUser", new_user_url %>
