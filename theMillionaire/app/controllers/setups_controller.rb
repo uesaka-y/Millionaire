@@ -1,5 +1,6 @@
 class SetupsController < ApplicationController
   before_action :set_setup, only: [:show, :edit, :update, :destroy]
+  #データベースから情報を見つけてくる
 
 
   # GET /setups/1

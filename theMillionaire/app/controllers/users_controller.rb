@@ -1,9 +1,13 @@
 class UsersController < ApplicationController
 
   skip_before_filter :find_login_user, :only => [:new, :create]
+  #ログインチェックなしで、データ登録と一覧表示
   before_action :set_user, :only=> [:show, :edit, :update, :destroy]
+  #ユーザーのデータを取ってきてから表示、編集、更新、削除
   skip_before_filter :login_required, :only=>[:new,:create]
+  #ユーザ登録と一覧画面では管理者チェックしない
   before_filter :admin_required, :only=>[:index,:destroy]
+  #一覧画面と削除画面は管理者チェックしない
   before_filter :retrieve_user, :only => [:show, :edit, :udpate]
 
 
@@ -83,9 +87,11 @@ redirect_to @user, :notice => 'User was successfully updated.'
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def user_params
+      #params が :user というキーを持ち、
+      #params[:user] は :name 及び :email というキーを持つハッシュであること」を検証
       params.require(:user).permit(:user_id, :name, :password)
     end
-    def retrieve_user
+    def retrieve_user#管理者でなく、一般ユーザーでもない場合、ユーザー一覧へ
     unless @login_user.adm? or @login_user.id == @user.id
         redirect_to user_path(@login_user)
       end
