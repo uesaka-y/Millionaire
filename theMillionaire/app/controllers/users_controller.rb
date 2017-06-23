@@ -27,6 +27,7 @@ class UsersController < ApplicationController
   # GET /users/new
   def new
     @user = User.new
+
   end
 
   # GET /users/1/edit
@@ -39,19 +40,20 @@ class UsersController < ApplicationController
      @user = User.new(user_params)
 
 
-       if @user.save
-         session[:user_id] = @user.id
-         flash[:notice] = "ログインに成功しました"
-         if @user.adm
-         redirect_to users_path
-       else
-         redirect_to setup_path
-       end
-       else
-         format.html { render :new }
-       end
+      if @user.save
+        session[:user_id] = @user.id
+        flash[:notice] = "ログインに成功しました"
+        if @user.adm
+        redirect_to user_path
+      else
+        redirect_to setup_path
+      end
+      else
+         render :new 
+      end
 
-   end
+  end
+
    # PATCH/PUT /users/1
    # PATCH/PUT /users/1.json
   def update
