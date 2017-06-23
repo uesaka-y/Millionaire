@@ -27,6 +27,7 @@ class UsersController < ApplicationController
   # GET /users/new
   def new
     @user = User.new
+
   end
 
   # GET /users/1/edit
@@ -42,7 +43,11 @@ class UsersController < ApplicationController
       if @user.save
         session[:user_id] = @user.id
         flash[:notice] = "ログインに成功しました"
-        redirect_to setup_path #ユーザーのメニュー画面へいく
+        if @user.adm
+        redirect_to users_path
+      else
+        redirect_to setup_path
+      end
       else
         format.html { render :new }
       end
