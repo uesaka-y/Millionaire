@@ -43,13 +43,8 @@ class UsersController < ApplicationController
       if @user.save
         session[:user_id] = @user.id
         flash[:notice] = "ログインに成功しました"
-        if @user.adm
-        redirect_to user_path
       else
-        redirect_to setup_path
-      end
-      else
-         render :new 
+         render :new
       end
 
   end
