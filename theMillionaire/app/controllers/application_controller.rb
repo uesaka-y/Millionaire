@@ -8,16 +8,16 @@ class ApplicationController < ActionController::Base
    before_action :find_login_user #アクション前にログインチェック
 
    def find_login_user #登録済みのユーザーか判断し、ログインする
-        @login_user = User.find_by_id(session[:user_id])
-        unless @login_user
-             redirect_to login_url and return false
-        end
-end
+      @login_user = User.find_by_id(session[:user_id])
+      unless @login_user
+           redirect_to login_url and return false
+      end
+    end
 
   private
   def admin_required #管理者でなければセットアップ画面へ
     unless @login_user.adm?
       redirect_to setup_path(@login_user)
     end
-end
+  end
 end
