@@ -1,14 +1,86 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>TheMillionaire</title>
-  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
-  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+  <title>Sockettest</title>
+  <%= stylesheet_link_tag    'application', media: 'all' %>
+  <%= javascript_include_tag 'application' %>
   <%= csrf_meta_tags %>
+
+
 </head>
 <body>
+  <div id="chat_area">
+  </div>
+    <span class="spade_def">
+      <input type="hidden" id="imagepath_spade_1" value="<%= asset_path 'Trumpimages/spade/tramp 1.png' %>">
+      <input type="hidden" id="imagepath_spade_2" value="<%= asset_path 'Trumpimages/spade/tramp 2.png' %>">
+      <input type="hidden" id="imagepath_spade_3" value="<%= asset_path 'Trumpimages/spade/tramp 3.png' %>">
+      <input type="hidden" id="imagepath_spade_4" value="<%= asset_path 'Trumpimages/spade/tramp 4.png' %>">
+      <input type="hidden" id="imagepath_spade_5" value="<%= asset_path 'Trumpimages/spade/tramp 5.png' %>">
+      <input type="hidden" id="imagepath_spade_6" value="<%= asset_path 'Trumpimages/spade/tramp 6.png' %>">
+      <input type="hidden" id="imagepath_spade_7" value="<%= asset_path 'Trumpimages/spade/tramp 7.png' %>">
+      <input type="hidden" id="imagepath_spade_8" value="<%= asset_path 'Trumpimages/spade/tramp 8.png' %>">
+      <input type="hidden" id="imagepath_spade_9" value="<%= asset_path 'Trumpimages/spade/tramp 9.png' %>">
+      <input type="hidden" id="imagepath_spade_10" value="<%= asset_path 'Trumpimages/spade/tramp 10.png' %>">
+      <input type="hidden" id="imagepath_spade_11" value="<%= asset_path 'Trumpimages/spade/tramp 11.png' %>">
+      <input type="hidden" id="imagepath_spade_12" value="<%= asset_path 'Trumpimages/spade/tramp 12.png' %>">
+      <input type="hidden" id="imagepath_spade_13" value="<%= asset_path 'Trumpimages/spade/tramp 13.png' %>">
+    </span>
+    <span class="club_def">
+      <input type="hidden" id="imagepath_club_1" value="<%= asset_path 'Trumpimages/club/tramp 1.png' %>">
+      <input type="hidden" id="imagepath_club_2" value="<%= asset_path 'Trumpimages/club/tramp 2.png' %>">
+      <input type="hidden" id="imagepath_club_3" value="<%= asset_path 'Trumpimages/club/tramp 3.png' %>">
+      <input type="hidden" id="imagepath_club_4" value="<%= asset_path 'Trumpimages/club/tramp 4.png' %>">
+      <input type="hidden" id="imagepath_club_5" value="<%= asset_path 'Trumpimages/club/tramp 5.png' %>">
+      <input type="hidden" id="imagepath_club_6" value="<%= asset_path 'Trumpimages/club/tramp 6.png' %>">
+      <input type="hidden" id="imagepath_club_7" value="<%= asset_path 'Trumpimages/club/tramp 7.png' %>">
+      <input type="hidden" id="imagepath_club_8" value="<%= asset_path 'Trumpimages/club/tramp 8.png' %>">
+      <input type="hidden" id="imagepath_club_9" value="<%= asset_path 'Trumpimages/club/tramp 9.png' %>">
+      <input type="hidden" id="imagepath_club_10" value="<%= asset_path 'Trumpimages/club/tramp 10.png' %>">
+      <input type="hidden" id="imagepath_club_11" value="<%= asset_path 'Trumpimages/club/tramp 11.png' %>">
+      <input type="hidden" id="imagepath_club_12" value="<%= asset_path 'Trumpimages/club/tramp 12.png' %>">
+      <input type="hidden" id="imagepath_club_13" value="<%= asset_path 'Trumpimages/club/tramp 13.png' %>">
+    </span>
+    <span class="dia_def">
+      <input type="hidden" id="imagepath_dia_1" value="<%= asset_path 'Trumpimages/dia/tramp 1.png' %>">
+      <input type="hidden" id="imagepath_dia_2" value="<%= asset_path 'Trumpimages/dia/tramp 2.png' %>">
+      <input type="hidden" id="imagepath_dia_3" value="<%= asset_path 'Trumpimages/dia/tramp 3.png' %>">
+      <input type="hidden" id="imagepath_dia_4" value="<%= asset_path 'Trumpimages/dia/tramp 4.png' %>">
+      <input type="hidden" id="imagepath_dia_5" value="<%= asset_path 'Trumpimages/dia/tramp 5.png' %>">
+      <input type="hidden" id="imagepath_dia_6" value="<%= asset_path 'Trumpimages/dia/tramp 6.png' %>">
+      <input type="hidden" id="imagepath_dia_7" value="<%= asset_path 'Trumpimages/dia/tramp 7.png' %>">
+      <input type="hidden" id="imagepath_dia_8" value="<%= asset_path 'Trumpimages/dia/tramp 8.png' %>">
+      <input type="hidden" id="imagepath_dia_9" value="<%= asset_path 'Trumpimages/dia/tramp 9.png' %>">
+      <input type="hidden" id="imagepath_dia_10" value="<%= asset_path 'Trumpimages/dia/tramp 10.png' %>">
+      <input type="hidden" id="imagepath_dia_11" value="<%= asset_path 'Trumpimages/dia/tramp 11.png' %>">
+      <input type="hidden" id="imagepath_dia_12" value="<%= asset_path 'Trumpimages/dia/tramp 12.png' %>">
+      <input type="hidden" id="imagepath_dia_13" value="<%= asset_path 'Trumpimages/dia/tramp 13.png' %>">
+    </span>
+    <span class="heart_def">
+      <input type="hidden" id="imagepath_heart_1" value="<%= asset_path 'Trumpimages/heart/tramp 1.png' %>">
+      <input type="hidden" id="imagepath_heart_2" value="<%= asset_path 'Trumpimages/heart/tramp 2.png' %>">
+      <input type="hidden" id="imagepath_heart_3" value="<%= asset_path 'Trumpimages/heart/tramp 3.png' %>">
+      <input type="hidden" id="imagepath_heart_4" value="<%= asset_path 'Trumpimages/heart/tramp 4.png' %>">
+      <input type="hidden" id="imagepath_heart_5" value="<%= asset_path 'Trumpimages/heart/tramp 5.png' %>">
+      <input type="hidden" id="imagepath_heart_6" value="<%= asset_path 'Trumpimages/heart/tramp 6.png' %>">
+      <input type="hidden" id="imagepath_heart_7" value="<%= asset_path 'Trumpimages/heart/tramp 7.png' %>">
+      <input type="hidden" id="imagepath_heart_8" value="<%= asset_path 'Trumpimages/heart/tramp 8.png' %>">
+      <input type="hidden" id="imagepath_heart_9" value="<%= asset_path 'Trumpimages/heart/tramp 9.png' %>">
+      <input type="hidden" id="imagepath_heart_10" value="<%= asset_path 'Trumpimages/heart/tramp 10.png' %>">
+      <input type="hidden" id="imagepath_heart_11" value="<%= asset_path 'Trumpimages/heart/tramp 11.png' %>">
+      <input type="hidden" id="imagepath_heart_12" value="<%= asset_path 'Trumpimages/heart/tramp 12.png' %>">
+      <input type="hidden" id="imagepath_heart_13" value="<%= asset_path 'Trumpimages/heart/tramp 13.png' %>">
+    </span>
+    <span class="wild_def">
+      <input type="hidden" id="imagepath_back" value="<%= asset_path 'Trumpimages/wild_card/tramp back.png' %>">
+      <input type="hidden" id="imagepath_joker_1" value="<%= asset_path 'Trumpimages/wild_card/tramp J1.png' %>">
+      <input type="hidden" id="imagepath_joker_2" value="<%= asset_path 'Trumpimages/wild_card/tramp J2.png' %>">
+      <!--側面にいる他プレイヤーのトランプを裏面で表示-->
+      <input type="hidden" id="imagepath_back_side" value="<%= asset_path 'Trumpimages/wild_card/tramp.back.side.png' %>">
 
-<%= yield %>
+    </span>
 
+
+  <%= yield %>
 </body>
 </html>

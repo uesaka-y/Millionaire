@@ -9,4 +9,6 @@ Rails.application.routes.draw do
 
     match'setup'=>"setups#show",via: :all
 
+    match'chat'=>"chat#index",via: :all
+
   end

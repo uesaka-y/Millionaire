@@ -5,11 +5,12 @@
 <% end %>
 
 <%= form_tag session_url do %>
-  <%= label :user_id, '' %>
-  <%= text_field_tag :user_id, @user_id ,:placeholder => "Enter your ID" %><br />
-  <%= label :password, '' %>
+  <%= label :user_id, 'user_id:' %>
+    <%= text_field_tag :user_id, @user_id ,:placeholder => "Enter your ID" %><br />
+  <%= label :password, 'password:' %>
   <%= password_field_tag :password, "" ,:placeholder => "Enter your Password" %><br />
-  <%= submit_tag "Login" %><br />
+  <%= submit_tag "login" %><br />
 <% end %>
 アカウントをお持ちでない方は
 <%= link_to "こちら", new_user_url %>
+から登録してください。

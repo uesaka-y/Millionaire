@@ -13,11 +13,12 @@ class SessionController < ApplicationController
 
     if @user
       session[:user_id] = @user.id
+      session[:user_name]=@user.name
       flash[:notice] = "ログインに成功しました"
       if @user.adm
         redirect_to users_path
       else
-        redirect_to setup_path #ユーザーのメニュー画面へいく
+        redirect_to chat_path #ユーザーのメニュー画面へいく
       end
     else
       @error = "ログインに失敗しました"
