@@ -1,10 +1,10 @@
-<h1 id="logintitle">The Millionaire</h1>
+<h1 class="logintitle">The Millionaire</h1>
 
 <% if @error %>
  <%= @error %><br />
 <% end %>
 
-<div id="login">
+<div class="login_form">
 <%= form_tag session_url do %>
   <%= label :user_id, '' %>
   <%= text_field_tag :user_id, @user_id ,:placeholder => "ID" %><br />
