@@ -42,6 +42,7 @@ class UsersController < ApplicationController
 
       if @user.save
         session[:user_id] = @user.id
+        session[:user_name]=@user.name
         flash[:notice] = "ログインに成功しました"
          redirect_to chat_path
       else
