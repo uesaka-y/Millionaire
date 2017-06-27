@@ -13,12 +13,33 @@ body{
 }
 
 .logintitle{
-  font-size: 50px;
+  font-size: 100px;
   font-family: cursive;
+  font-weight: bold;
 }
 
 .login_form{
   font-family: cursive;
   border-style:outset;
   border-width:12px;
+  height: 200px;
+  padding-top: 60px;
+}
+
+.new_user{
+  text-align: right;
+}
+
+.box{
+  width: 500px;
+  height: 40px;
+  text-align: center;
+  font-size: 20px;
+  font-family: cursive;
+}
+
+input[type="submit"].login_button{
+  font-family: cursive;
+  width: 150px;
+  height: 40px;
 }

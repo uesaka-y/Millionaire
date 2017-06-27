@@ -1,4 +1,4 @@
-<h1 class="logintitle">The Millionaire</h1>
+<div class="logintitle">The Millionaire</div>
 
 <% if @error %>
  <%= @error %><br />
@@ -7,11 +7,15 @@
 <div class="login_form">
 <%= form_tag session_url do %>
   <%= label :user_id, '' %>
-  <%= text_field_tag :user_id, @user_id ,:placeholder => "ID" %><br />
+  <%= text_field_tag :user_id, @user_id ,:placeholder => "ID" ,:class => "box" %><br /><br />
   <%= label :password, '' %>
-  <%= password_field_tag :password, "" ,:placeholder => "Password" %><br />
-  <%= submit_tag "Login" %><br />
+  <%= password_field_tag :password, "" ,:placeholder => "Password" ,:class => "box" %><br /><br />
+
+  <%= submit_tag "Login",:class => 'login_button' %><br />
 <% end %>
 </div>
+
+<div class="new_user">
 アカウントをお持ちでない方は
 <%= link_to "こちら", new_user_url %>
+</div>
