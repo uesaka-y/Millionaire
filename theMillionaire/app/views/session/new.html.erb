@@ -1,17 +1,15 @@
-<h1>The Millionaire</h1>
-
+<h1 id="logintitle">The Millionaire</h1>
 
 <% if @error %>
  <%= @error %><br />
 <% end %>
 
-
+<div id="login">
 <%= form_tag session_url do %>
-<div>
   <%= label :user_id, '' %>
-  <%= text_field_tag :user_id, @user_id ,:placeholder => "Enter your ID" %><br />
+  <%= text_field_tag :user_id, @user_id ,:placeholder => "ID" %><br />
   <%= label :password, '' %>
-  <%= password_field_tag :password, "" ,:placeholder => "Enter your Password" %><br />
+  <%= password_field_tag :password, "" ,:placeholder => "Password" %><br />
   <%= submit_tag "Login" %><br />
 <% end %>
 </div>
