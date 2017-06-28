@@ -10,6 +10,9 @@
 <!-- コメントフォーム -->
 <input id="comment" type="text">
 <input id="send" type="button" value="send">
+<input id="ready" type="button" value="準備完了"><br>
+<input id="trushhand" type="button" value="出す">
+<input id="pass" type="button" value="パス">
 <!-- ゲームステージがここに描画される-->
 <div id="enchant-stage" style="background-color:#006432;">
 </div>
@@ -28,8 +31,8 @@
   var ws = new WebSocket("ws://192.168.100.33:3001/");
   //自分のログインユーザ名の取得
   var ownname=document.getElementById("login_user").textContent;
-  var ownturn=100;//自分のターン
-  var fieldturn=200;//「誰の番か？」
+  var ownturn=1;//自分のターン
+  var fieldturn=1;//「誰の番か？」
   var num_login=1;
 
   //各ログインユーザのテキスト。0に自分の名前が入り、1からは他の人間が入る
@@ -41,9 +44,17 @@
   var nameposition_y=[395,280,20,160];
   var imagepaths=[];//手札配列　jokerなしは13、jokerありは14
   var handimage=[];//手札の画像オブジェクトの格納される配列
+  var my_hands=13;
   var suit=["club","spade","dia","heart"]
 
   var tmp_cardpath="";
+
+  var trush=new Array(4);
+  var trushhands="";//自身が選択した捨て場に捨てるカード
+
+  var fieldcard="back_0";//場のカード
+  var fieldcardnum=0;//場のカードの枚数
+  var revolution_flag=0;//場の革命状態フラグ(0:通常,1:革命)
 
   var isTouch=false;
   var touchX=null;
@@ -57,10 +68,10 @@
       core.preload(document.getElementById("imagepath_"+suit[suit_index]+"_"+(num_index+1)).value);
     }
   }
-  core.preload(document.getElementById("imagepath_joker_1").value);
-  core.preload(document.getElementById("imagepath_joker_2").value);
-  core.preload(document.getElementById("imagepath_back").value);
-
+  core.preload(document.getElementById("imagepath_joker_14_1").value);
+  core.preload(document.getElementById("imagepath_joker_14_2").value);
+  core.preload(document.getElementById("imagepath_back_0").value);
+  core.preload(document.getElementById("clearfield").value);
 
   //通信確立時に行われる処理。ログインユーザのuser_nameを自動的にサーバに送信し
   //現在何人のユーザがアクティブなのかをサーバからユーザに返してもらう
@@ -121,32 +132,19 @@
 
       }//for(var index=0;index<loginusers.length;index++)終了
 
-      rendererGameView(num_login);
     }//Allusername終了
 
     else if(array_of_message[1]=="DeckCreate"){
-
       console.log("deckcreate");
+
       for(var i=0;i<13;i++){
+
         imagepaths[i]=array_of_message[3].split(",")[i];
         handimage[i] = new Sprite(32,64);//手札の代入
         console.log(array_of_message[3].split(",")[i]);
         handimage[i].image=core.assets[document.getElementById("imagepath_"+array_of_message[3].split(",")[i]).value];
         handimage[i].x=200+i*32;
         handimage[i].y=385;
-        //他プレイヤーのトランプの表示-->
-        handimage[i].image=core.assets[document.getElementById("imagepath_back_side")];
-        handimage[i].x=200+i*32;
-        handimage[i].y=385;
-
-        handimage[i].image=core.assets[document.getElementById("imagepath_back")];
-        handimage[i].x=200+i*32;
-        handimage[i].y=385;
-
-        handimage[i].image=core.assets[document.getElementById("imagepath_back_side")];
-        handimage[i].x=200+i*32;
-        handimage[i].y=385;
-
         core.rootScene.addChild(handimage[i]);
       }
       //otherhands = new Sprite(32,64);//他者手札の代入
@@ -162,30 +160,111 @@
     else if(array_of_message[1]=="GameStart"){
       ownturn=array_of_message[3];
       fieldturn=0;
+
       console.log("あなたは"+ownturn+"番目です");
 
     }
 
-    //ゲーム画面をクリックした場合の処理。「カードの領域」をクリックした場合
-    //「カードを選択したもの」と処理する
-    if(ownturn==fieldturn){
-      document.getElementById("chat_area").append("[message]あなたのターンです<br>");
-      document.getElementById("enchant-stage").addEventListener("click",function(e){
+    else if(array_of_message[1]=="InformField"){
+      fieldcard=array_of_message[3];
+      fieldturn=array_of_message[5];
+      console.log(fieldturn+"のターン");
+      console.log("fieldcard:"+fieldcard.split("_"));
+      fieldcardnum=array_of_message[3].split("_")[0].split(",").length-1;
+      console.log("fieldcard="+fieldcard);
+      console.log("fieldcardnum:"+fieldcardnum);
+      if(revolution_flag!=Number(array_of_message[7])){
+        revolution_flag=Number(array_of_message[7]);
+        if(Number(array_of_message[7])==1){
+          document.getElementById("chat_area").innerHTML+="<br>messagetype*comment*value*[革命勃発！]3>>K>>2";
+        }
+        else if(Number(array_of_message[7])==0){
+          document.getElementById("chat_area").innerHTML+="<br>messagetype*comment*value*[革命鎮圧！]3<<K<<2";
+        }
+      }
+      revolution_flag=Number(array_of_message[7]);
+      console.log(array_of_message[3]+"が出されました:"+fieldcardnum+"枚");
+      trushhands="";
 
-          isTouch=true;
-          touchX=e.pageX;
-          touchY=e.pageY;
-          console.log("[x]"+touchX+"[y]"+touchY);
+      if(fieldcard=="back_0"){
+        //core.rootScene.removeChild(resetfield);
+        var resetfield=new Sprite(120,120);
+        resetfield.image=core.assets[document.getElementById("clearfield").value];
+        resetfield.x=280;
+        resetfield.y=180;
+        core.rootScene.addChild(resetfield);
+        fieldcard="back_0";
+        trushhands="";
+        fieldcardnum=0;
+      }
 
-          var selectedcard=parseInt((touchX-210)/32);
-          if(selectedcard>=0 && selectedcard<=12 && touchY>=470 && touchY<=534)
-            console.log(imagepaths[selectedcard]);
-
-      });
+      //ゲーム画面をクリックした場合の処理。「カードの領域」をクリックした場合
+      //「カードを選択したもの」と処理する
+      if(ownturn==fieldturn){
+        document.getElementById("chat_area").innerHTML="[message]あなたのターンです";
+      }
+      else{
+        document.getElementById("chat_area").innerHTML="[message]"+document.getElementById("listener").textContent.split(",")[fieldturn]+"のターンです";
+      }
+      for(var i=0;i<array_of_message[3].split("_")[0].split(",").length-1;i++){
+      core.rootScene.removeChild(trush[i]);
+      trush[i]= new Sprite(32,64);
+      trush[i].image=core.assets[document.getElementById("imagepath_"+array_of_message[3].split("_")[0].split(",")[i]+"_"+array_of_message[3].split("_")[1]).value];
+      trush[i].x=300+i*10;
+      trush[i].y=200;
+      core.rootScene.addChild(trush[i]);
     }
+      //core.rootScene.removeChild(handimage[selectedcard]);
+      //ws.send("messagetype*SubmitCard*value*"+imagepaths[selectedcard]+"*player*"+ownname+"*hands*"+my_hands);//全listenの取得
+    }
+    isTouch=false;
 
   };//ws.onmessage終了
+  document.getElementById("enchant-stage").addEventListener("click",function(e){
+      if(ownturn==fieldturn){
+        isTouch=true;
+        touchX=(e.pageX-(window.innerWidth-640)/2-11);//クリックしたゲームウィンドウのx座標
+        touchY=(e.pageY-(window.innerHeight-480)/2-6);//クリックしたゲームウィンドウのy座標
+        console.log("[x]:"+e.pageX+"[y]"+e.pageY);
+        console.log("gamewidth="+(touchX));
+        console.log("gameheight="+(touchY));
+        console.log("imagepaths:"+imagepaths);
 
+        var selectedcard=parseInt((touchX-200)/32);//クリック座標から割り出した、クリック手札座標
+        if(selectedcard>=0 && selectedcard<=12 && touchY>=385 && touchY<=449){
+          //選択したカードが、捨て場のカードに対し大きい数なら選択可能
+          console.log("fieldcardnum:"+fieldcardnum+"trushhands:"+trushhands.split(",").length-1);
+          console.log("fieldcard:"+fieldcard);
+          console.log("selectedcard="+imagepaths[selectedcard]);
+          if(Number(fieldcard.split("_")[1])<Number(imagepaths[selectedcard].split("_")[1]) && imagepaths[selectedcard]!="back_0"){
+            if((Number(imagepaths[selectedcard].split("_")[1])==Number(trushhands.split(",")[0].split("_")[1])) && fieldcardnum>=Number(trushhands.split(",").length-1) || fieldcardnum==0 || Number(trushhands.split(",").length)==1){
+              if(handimage[selectedcard].y==385 && fieldcardnum!=Number(trushhands.split(",").length-1) || fieldcardnum==0){
+                trushhands+=(imagepaths[selectedcard]+",");
+                handimage[selectedcard].y=355;
+                core.rootScene.addChild(handimage[selectedcard]);
+              }
+              else if(handimage[selectedcard].y==355){
+                trushhands=trushhands.replace(imagepaths[selectedcard]+",","") ;
+                handimage[selectedcard].y=385;
+                core.rootScene.addChild(handimage[selectedcard]);
+              }
+              console.log("選択カード:"+trushhands);
+            }
+          }
+
+            /*
+          my_hands-=1;
+          var trush= new Sprite(32,64);
+          trush.image=core.assets[document.getElementById("imagepath_"+imagepaths[selectedcard]).value];
+          trush.x=300;
+          trush.y=200;
+          core.rootScene.addChild(trush);
+          core.rootScene.removeChild(handimage[selectedcard]);
+          ws.send("messagetype*SubmitCard*value*"+imagepaths[selectedcard]+"*player*"+ownname+"*hands*"+my_hands);//全listenの取得
+          */
+        }
+      }
+    });
 
 
   // コメント送信ボタンを押した時の処理
@@ -198,20 +277,39 @@
     ws.send(send_message);
   };
 
+  //準備完了ボタンを押した時、シャッフルされた山札から
+  //手札が順次配布される
+  document.getElementById("ready").onclick = function(){
+    //コメント領域の入力値の取得
+    //var comment = document.getElementById("comment").value;
+    //commentリクエストメッセージ
+    //var send_message="messagetype*comment*value*"+comment;
+    //commentリクエストメッセージを送信。他のlistenerへコメントを同期してもらう
+    if(num_login-1==4)
+    ws.send("messagetype*DeckShuffle*value*"+ownname);
+  };
 
+  //パスを選択した場合の処理
+  document.getElementById("pass").onclick = function(){
+    ws.send("messagetype*Pass*value*"+ownname);
+  };
 
-/**************　ゲーム画面のレンダリング関数 ***************/
-//引数として「現在のログイン人数」を持つ
-  function rendererGameView(num_login) {
-
-    //プレイヤーが4人揃った時
-    if(num_login-1==4){
-      num_login=0;
-      document.getElementById("chat_area").append("[message]4人揃いました。ゲームを開始します。\n");
-      console.log("deckshuffle:"+ownname);
-      ws.send("messagetype*DeckShuffle*value*"+ownname);
-    }
-
+  //「出す」を選択した場合の処理
+  document.getElementById("trushhand").onclick = function(){
+    console.log(my_hands);
+    if((trushhands.split(",").length-1==fieldcardnum || fieldcardnum==0) && ownturn==fieldturn){
+      my_hands=my_hands-trushhands.split(",").length+1;
+      console.log(my_hands);
+      for(var i=0;i<trushhands.split(",").length-1;i++){
+        core.rootScene.removeChild(handimage[imagepaths.indexOf(trushhands.split(",")[i])]);
+        imagepaths[imagepaths.indexOf(trushhands.split(",")[i])]="back_0";
+      }
+      console.log("messagetype*SubmitCard*value*"+trushhands+"*player*"+ownname+"*hands*"+my_hands);
+      if(my_hands==0){
+        document.getElementById("listener").innerHTML+="<br>[あがり！]";
+      }
+      ws.send("messagetype*SubmitCard*value*"+trushhands+"*player*"+ownname+"*hands*"+my_hands);
+  }
   };
 
   core.start();//ゲーム画面を実際にブラウザへ描画する

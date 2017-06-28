@@ -2,8 +2,9 @@
 
 <h1>Listing Users</h1>
 
-<table>
+<table style="border-style:outset;border-width:12px;">
   <thead>
+
     <tr>
       <th>ID</th>
       <th>Name</th>
@@ -13,13 +14,14 @@
   <tbody>
     <% @users.each do |user| %>
       <tr>
-        <td><%= user.user_id %></td>
+        <td><a href="http://192.168.100.33:3000/users/<%=user.user_id%>"><%= user.user_id %></a></td>
         <td><%= user.name %></td>
         <td><%= link_to 'Destroy', user, method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
     <% end %>
   </tbody>
 </table>
+
 <br>
 
 <%= link_to 'GameStart', chat_path %>

@@ -1,21 +1,15 @@
-<div class="logintitle">The Millionaire</div>
+<h1>The Millionaire</h1>
 
 <% if @error %>
  <%= @error %><br />
 <% end %>
 
-<div class="login_form">
 <%= form_tag session_url do %>
   <%= label :user_id, '' %>
-  <%= text_field_tag :user_id, @user_id ,:placeholder => "ID" ,:class => "box" %><br /><br />
+  <%= text_field_tag :user_id, @user_id ,:placeholder => "Enter your ID" %><br />
   <%= label :password, '' %>
-  <%= password_field_tag :password, "" ,:placeholder => "Password" ,:class => "box" %><br /><br />
-
-  <%= submit_tag "Login",:class => 'login_button' %><br />
+  <%= password_field_tag :password, "" ,:placeholder => "Enter your Password" %><br />
+  <%= submit_tag "Login" %><br />
 <% end %>
-</div>
-
-<div class="left">
 アカウントをお持ちでない方は
 <%= link_to "こちら", new_user_url %>
-</div>
